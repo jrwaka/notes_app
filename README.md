@@ -1,16 +1,34 @@
-# todo_list_app
+# Notes App
 
-A new Flutter project.
+A simple note-taking Flutter app with Firebase Authentication and Firestore.
+Users can register, log in, and perform full CRUD (Create, Read, Update, Delete) operations on their personal notes.
+
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+## 1. Prerequisites
 
-A few resources to get you started if this is your first Flutter project:
+Install Flutter SDK & Dart plugin
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Set up Android Studio or VS Code
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Create a Firebase project
+
+## 2. Clone the Project
+git clone [https://github.com/yourusername/notes_app.git](https://github.com/jrwaka/notes_app.git)
+
+cd notes_app
+
+## 3. Install Packages
+flutter pub get
+
+## 4. Set Up Firebase
+
+Add android app in Firebase
+
+Download google-services.json and place it in android/app
+
+Enable Firestore & Authentication (email/password)
+
+## 5. Run the App
+flutter run
