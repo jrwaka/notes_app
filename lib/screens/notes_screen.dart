@@ -21,6 +21,42 @@ Provider.of<NotesProvider>(context, listen: false).fetchNotes();
 });
 }
 
+Future<void> _confirmDelete(Note note, NotesProvider provider) async {
+final confirm = await showDialog<bool>(
+  context: context,
+  builder: (context) => AlertDialog(
+    title: const Text('Delete Note'),
+    content: const Text('Are you sure you want to delete this note?'),
+    actions: [
+      TextButton(
+        onPressed: () => Navigator.pop(context, false),
+        child: const Text('Cancel'),
+      ),
+      ElevatedButton(
+        onPressed: () => Navigator.pop(context, true),
+        style: ElevatedButton.styleFrom(backgroundColor: Colors.red, foregroundColor: Colors.white),
+        child: const Text('Delete'),
+      ),
+    ],
+  ),
+);
+
+if (confirm == true) {
+  try {
+    await provider.deleteNote(note.id);
+    if (!context.mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Note deleted")),
+    );
+  } catch (e) {
+    if (!context.mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Error deleting note: $e")),
+    );
+  }
+}
+}
+
 @override
 Widget build(BuildContext context) {
 final notesProvider = Provider.of<NotesProvider>(context);
@@ -80,20 +116,7 @@ return Scaffold(
                         ),
                         IconButton(
                           icon: const Icon(Icons.delete, color: Colors.red),
-                          onPressed: () async {
-                            try {
-                              await notesProvider.deleteNote(note.id);
-                              if (!context.mounted) return;
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text("Note deleted")),
-                              );
-                            } catch (e) {
-                              if (!context.mounted) return;
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text("Error deleting note: $e")),
-                              );
-                            }
-                          },
+                          onPressed: () => _confirmDelete(note, notesProvider),
                         ),
                       ],
                     ),
