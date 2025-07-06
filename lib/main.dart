@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 
+import 'firebase_options.dart';
 import 'providers/auth_provider.dart';
 import 'providers/notes_provider.dart';
 
@@ -12,7 +13,16 @@ import 'screens/add_edit_note_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+
+  try {
+    debugPrint("Initializing Firebase...");
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    debugPrint("✅ Firebase initialized successfully");
+  } catch (e) {
+    debugPrint("🔥 Firebase init failed: $e");
+  }
 
   runApp(
     MultiProvider(
@@ -32,6 +42,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Notes App',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.indigo),
       initialRoute: '/login',
       routes: {
